@@ -1,78 +1,48 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<math.h>
-#include <stdbool.h>
+#include <stdio.h>
+#include <math.h>
 
 /**
- * @brief считывает вещественное число
- * @return вещественное число
- */
+* @brief функция для вычисления значения а
+* param count значение переменной cnt
+* param f значение переменной f
+* @return результат  вычисления а
+*/
 
-    double Input(void);
-
-/**
- * @brief считывает вещественное число с проверкой знака
- * @return вещественное число в случае, если оно больше нуля
- */
-
-double PInput(void);
+double get_a(const double count, const double f);
 
 /**
- * @brief определяет, пройдет ли кирпич в отверстие
- * @param x длина 1 стороны треугольника
- * @param y длина 2 стороны треугольника
- * @param z длина 3 стороны треугольника
- * @return true, если подходит и false, если не подходит
- */
+* @brief функция для вычисления значения sr_arifm
+* param count значение переменной cnt
+* param f значение переменной f
+* @return результат  вычисления sr_arifm
+*/
 
-bool iflengthenter(const double x, const double y, const double z);
+double sr_arifm(const double count, const double f);
+double input(void);
 
 /**
- * @brief точка входа в программу
- * @return 0 в случае успеха
- */
- 
-int main(void)
-{
-    puts("Введите длину 1 стороны x треугольника ");
-    const double x = PInput();
-    puts("Введите длину 2 стороны y треугольника ");
-    const double y = PInput();
-    puts("Введите длину 3 стороны z треугольника ");
-    const double z = PInput();
-    if (iflengthenter(x, y, z) == true)
-    {
-        puts("треугольник остроугольный");
-        return 0;
-    };
-    puts("треугольник неостроугольный");
-    return 0;
+* @brief точка входа в программу
+* @return в случае успеха
+*/
+
+int main() {
+	puts("Enter the count:");
+	double count = input();
+	puts("Enter the f:");
+	double f = input();
+	printf("a = %f\n", get_a(count, f));
+	printf("%f", sr_arifm(count, f));
+	return 0;
 }
-double Input(void)
+double input(void) 
 {
-    double value = 0.0;
-    if (scanf_s("%lf", &value) != 1)
-    {
-        puts("Не является числом");
-        exit(EXIT_FAILURE);
-    }
-    return value;
+	double number;
+	scanf_s("%lf", &number);
+	return number;
 }
-double PInput(void)
-{
-    double value = Input();
-    if (value <= 0)
-    {
-        puts("Некорректное значение длины");
-        exit(EXIT_FAILURE);
-    }
-    return value;
+double get_a(const double count, const double f) {
+	return sqrt(fabs(pow(count, 3)) * fabs(pow(f, 3)));
 }
-bool iflengthenter(const double x, const double y, const double z)
-{
-    if (pow(x,2)<(pow(y,2)+pow(z,2)))
-    {
-        return true;
-    }
-    return false;
+double sr_arifm(const double cnt, const double f) {
+	return (fabs(pow(cnt, 3)) * fabs(pow(f, 3))) / 2;
 }
