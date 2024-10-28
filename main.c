@@ -4,13 +4,6 @@
 #include <stbool.h>
 #include <float.h>
 
-
-/**
-* @brief проверяет равно ли число нулю(через эпсилон)
-* @param number сравнимое число
-* @return true если число равно нулю,в противном случае false
-*/
-bool isZero(const double number);
 /*
 * @brief функция для вычисления значения y
 * @param x значение переменной х
@@ -35,22 +28,23 @@ double Positiveinput(void);
 * @return 0 в случае успеха
 **/
 int main(void){
-	const double start = input(), end = input();
-	const double step = input();
+	puts("Введите начальное значение х");
+	double start=input();
+        puts("Введите конечное значение х");
+	double end =input();
+        puts("Введите шаг");
+	double start=Positiveinput();
 	
-	for (double x = start; x < (end + step); x += step) 
+	for (start;start <= end + DBL_EPSILON; start += step) 
 	{
-		printf("y=%lf\n", get_y(x));
+		printf("y=%lf\n", get_y(start));
 	}
 	return 0;
 }
 double get_y(const double x) {
 	return x + cos(pow(x, 0.52) + 2);
 }
-bool isZero(const double number)
-{
-  return (fabs(number) < DBL_EPSILON);
-}
+
 double input(void) {
   double number = 0;
   if (scanf_s("%lf", &number) != 1) {
@@ -62,7 +56,7 @@ double input(void) {
 double positiveinput(void)
 {
   double number = input();
-  if ((number < 0) || isZero(number))
+  if (number < DBL_EPSILON )
   {
     puts("Введенное число меньше или равно нулю!");
     exit(EXIT_FAILURE);
