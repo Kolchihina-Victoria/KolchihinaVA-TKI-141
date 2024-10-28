@@ -7,7 +7,6 @@
 * param f значение переменной f
 * @return результат  вычисления а
 */
-
 double get_a(const double count, const double f);
 
 /**
@@ -16,16 +15,19 @@ double get_a(const double count, const double f);
 * param f значение переменной f
 * @return результат  вычисления sr_arifm
 */
-
 double sr_arifm(const double count, const double f);
+
+/**
+* @brief функция считывает ввод пользователя с проверкой
+* @return введенное число типа double
+*/
 double input(void);
 
 /**
 * @brief точка входа в программу
 * @return в случае успеха
 */
-
-int main() {
+int main(void) {
 	puts("Enter the count:");
 	double count = input();
 	puts("Enter the f:");
@@ -34,10 +36,15 @@ int main() {
 	printf("%f", sr_arifm(count, f));
 	return 0;
 }
-double input(void) 
+double input(void)
 {
-	double number;
-	scanf_s("%lf", &number);
+	double number = 0.0;
+	if (scanf_s("%lf", &number) != 1)
+	{
+		puts("Неверный ввод!");
+		exit(EXIT_FAILURE);
+	}
+
 	return number;
 }
 double get_a(const double count, const double f) {
