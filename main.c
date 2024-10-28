@@ -6,17 +6,23 @@
 * @param x значение переменной х
 * @return результат значения у
 **/ 
-
 double get_y(const double x);
+
+/**
+* @brief функция считывает ввод пользователя с проверкой
+* @return введенное число типа double
+*/
+double input(void);
 
 /*
 * @brief точка входа в программу
 * @return 0 в случае успеха
 **/
-
 int main(void){
-	double x = 0.5;
-	for (x; x <= 1; x += 0.05) 
+	const double start = input(), end = input();
+	const double step = input();
+	
+	for (double x = start; x < (end + step); x += step) 
 	{
 		printf("y=%lf\n", get_y(x));
 	}
