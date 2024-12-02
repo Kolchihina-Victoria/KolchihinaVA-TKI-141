@@ -2,42 +2,36 @@
 #include <math.h>
 
 /**
-*@brief считывает данные типа int,вводимые пользователем
-*@return возвращает значение,введённое пользователем
+*@brief factorial считает факториал числа 
+*@return возвращает значение факториала
 */
 int factorial(int n);
 
 /**
-*@brief считывает данные типа float,вводимые пользователем
-*@return возвращает значение,введённое пользователем
+*@brief  raising_to_the_third_power возводит число в 3 степень 
+*@return возвращает значение числа в 3 степени
 */
-float vozvedenie_v_tretiu_snepen(int z);
+float raising_to_the_third_power(int z);
 
 /**
-*@brief считывает данные типа float,вводимые пользователем
-*@return возвращает значение,введённое пользователем 
+*@brief raising_to_the_k_power возводит число в к степень
+*@return возвращает значение числа в к степени
 */
-float vozvedenie_v_kstepen(int x);
+float raising_to_the_k_power(int x);
 
 /**
-*@brief считывает данные типа float,вводимые пользователем
-*@return возвращает значение,введённое пользователем
+*@brief res_p свыводит промежуточный результат
+*@return возвращает значение промежуточного результата
 */
 float res_p(int e);
-
-/**
-*@brief считывает данные типа float,вводимые пользователем
-*@return возвращает значение,введённое пользователем
-*/
-float otvet=0.0;
 
 /**
 *@brief выводит значение выражения
 *@return  возращаеь 0 в случае успеха
 */
-
 int main() 
 {
+    float otvet=0.0;
     printf("Введите значение к:");
     int k;
     scanf("%d",&k);
@@ -61,7 +55,7 @@ int factorial(int n)
     }
     return n * factorial(n - 1);
 }
-float vozvedenie_v_tretiu_snepen(int z)
+float raising_to_the_third_power(int z)
 {
     if (z==0)
     {
@@ -70,7 +64,7 @@ float vozvedenie_v_tretiu_snepen(int z)
     else 
     return pow(z+1,3);
 }
-float vozvedenie_v_kstepen(int x)
+float raising_to_the_k_power(int x)
 {
     if (x==0)
     {
@@ -81,7 +75,7 @@ float vozvedenie_v_kstepen(int x)
 }
 float res_p(int e)
 {
-  float resp=vozvedenie_v_kstepen(e)*vozvedenie_v_tretiu_snepen(e)/factorial(e);
+  float resp=raising_to_the_k_power(e)*vraising_to_the_third_power(e)/factorial(e);
   printf("%f\n",resp);
   return resp;
   return 0;
