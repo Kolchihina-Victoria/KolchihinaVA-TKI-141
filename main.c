@@ -52,14 +52,31 @@ void PrintArray(const int* array, const size_t arrayLength);
 void FillArrayManually(int* array, const size_t arrayLength);
 
 /**
- * @brief заполняет массив случайными значениями от -1000 до 1000.
+ * @brief заполняет массив случайными значениями.
  * @param array указатель на массив.
  * @param arrayLength длина массива.
  */
 void FillArrayRandomly(int* array, const size_t arrayLength);
 
+/**
+ * @brief выполняет операцию над целочисленным массивом.
+ * @param array указатель на входной целочисленный массив.
+ * @param arrayLength длина входного массива.
+ */
 int Task1(const int* array, const size_t arrayLength, const int k);
+
+/**
+ * @brief  создает новый целочисленный массив на основе входного массива.
+ * @param array указатель на входной целочисленный массив.
+ * @param arrayLength длина входного массива.
+ */
 int* Task2(const int* array, const size_t arrayLength);
+
+/**
+ * @brief  подсчитывает что-либо в целочисленном массиве.
+ * @param array указатель на входной целочисленный массив.
+ * @param arrayLength длина входного массива.
+ */
 size_t Task3(const int* array, const size_t arrayLength);
 
 /**
@@ -67,7 +84,7 @@ size_t Task3(const int* array, const size_t arrayLength);
  * 
  * это перечисление определяет два метода заполнения массива:
  * - вручную: массив заполняется данными введенными пользователем.
- * - случайным образом: массив заполняется случайными значениями от -1000 до 1000.
+ * - случайным образом: массив заполняется случайными значениями введенными пользователем.
  */
 typedef enum
 {
@@ -107,10 +124,16 @@ int main(void)
     }
     
     PrintArray(array, arrayLength);
-    
-    puts("Введите значение k:");
-    const int k = dInput(); 
-
+{
+        puts("Введите значение k:");
+        const int k = dInput();
+        if (k < 0) 
+        {
+            puts("Ошибка: k должно быть неотрицательным.");
+            free(array);
+            return 1;
+        }
+}
     puts("1.");
     printf("Сумма = %d", Task1(array, arrayLength, k));
     
@@ -151,7 +174,7 @@ size_t sizetInput(void)
         exit(EXIT_FAILURE);
     }
 
-    if (value < 0) 
+    if (value <= 0) 
     {
         puts("Отрицательные значения не допускаются:");
         exit(EXIT_FAILURE);
