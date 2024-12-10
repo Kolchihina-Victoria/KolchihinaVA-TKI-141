@@ -1,125 +1,262 @@
-#include <stdlib.h>
 #include <stdio.h>
-#include <float.h>
-#include <math.h>
+#include <stdlib.h>
 #include <time.h>
+#include <math.h>
+
 
 /**
- * @brief считывает массив и число обозначающее количество элементов массива
- * @return сумму четных элементов массива
+ * @brief считывает целое число.
+ * @return возращает целое число.
  */
-int sum_even_numb(int num[],int n);
+int dInput(void);
 
 /**
- * @brief считывает массив и число обозначающее количество элементов массива
- * @return произведение четных положительных эдементов мссива на последний элемент
+ * @brief считывает значение size_t.
+ * @return значение size_t.
  */
-int multiplicatiom_numbers(int num[],int n);
+size_t sizetInput(void);
 
 /**
- * @brief считывает массив и число обозначающее количество элементов массива
- * @return номер первой пары соседних элементов с разными знаками
+ * @brief проверяет что указатель не равен NULL.
+ * @param pointer указатель для проверки. 
  */
-int first_pair(int num[],int n);
+void VerifyPointer(const void* pointer);
 
 /**
-*@brief выводит значение массива
-*@return  возращаеь 0 в случае успеха
-*/
-int main() 
+ * @brief выделяет память для массива целых чисел.
+ * @param arrayLength длина массива.
+ * @return указатель на выделенный массив.
+ */
+int* InitializeArray(const size_t arrayLength);
+
+/**
+ * @brief копирует массив целых чисел.
+ * @param arrayToCopy указатель на массив целых чисел который необходимо скопировать.
+ * @param arrayLength длина массива которую нужно скопировать.
+ * @return указатель на вновь выделенный массив содержащий скопированные значения.
+ */
+int* CopyArray(const int* arrayToCopy, const size_t arrayLength);
+
+/**
+ * @brief выводит элементы массива.
+ * @param array указатель на массив.
+ * @param arrayLength длина массива.
+ */
+void PrintArray(const int* array, const size_t arrayLength);
+
+/**
+ * @brief заполняет массив данными введеными пользователем.
+ * @param array указатель на массив.
+ * @param arrayLength длина массива.
+ */
+void FillArrayManually(int* array, const size_t arrayLength);
+
+/**
+ * @brief заполняет массив случайными значениями от -1000 до 1000.
+ * @param array указатель на массив.
+ * @param arrayLength длина массива.
+ */
+void FillArrayRandomly(int* array, const size_t arrayLength);
+
+int Task1(const int* array, const size_t arrayLength, const int k);
+int* Task2(const int* array, const size_t arrayLength);
+size_t Task3(const int* array, const size_t arrayLength);
+
+/**
+ * @brief перечисление для методов заполнения массива.
+ * 
+ * это перечисление определяет два метода заполнения массива:
+ * - вручную: массив заполняется данными введенными пользователем.
+ * - случайным образом: массив заполняется случайными значениями от -1000 до 1000.
+ */
+typedef enum
 {
-    int n,i,z,r;
-    int sum=0;
-    printf("enter array size:");
-    scanf("%d",&n);
-    int num[n];
-    printf("how to fill the array:\n");
-    printf("1.random numbers:\n");
-    printf("2.input numbers yourself:\n");
-    scanf("%d",&i);    
-    if (i==1)
+    manually = 1,
+    randomly = 2
+} FillingMethod;
+
+/**
+ * @brief точка входа в программу 
+ * @return возращает ноль в случае успеха
+ */
+int main(void) 
+{
+    srand(time(NULL));
+
+    puts("Введите длину массива:");
+    const size_t arrayLength = sizetInput();
+    int* array = InitializeArray(arrayLength);
+    
+    puts("Введите способ заполнения массива:");
+    const FillingMethod fillingMethod = (FillingMethod)dInput();
+
+    switch (fillingMethod)
     {
-        srand(time(NULL));
-        for(z=0;z<n;z++)
-        {
-            num[z]=rand()%300-100;
-        }
+        case manually:
+            FillArrayManually(array, arrayLength);
+            break;
+        
+        case randomly:
+            FillArrayRandomly(array, arrayLength);
+            break;
+        
+        default:
+            puts("Неверное значение для метода заполнения:");
+            free(array);
+            return 1;
     }
-    else if(i==2)
-    {
-        for (z=0;z<n;z++)
-        {
-            printf("enter number from -100 to 200 %d:",z);
-            scanf("%d",&num[z]);
-            if ((num[z]<=200)&&(num[z]>=-100))
-            {
-                printf("enter right value:\n");
-            }
-            else
-            {
-                printf("invalid value entered:\n");
-                return 0;
-            }
-        }
-    }
-    else
-    {
-        printf("invalid number:\n");
-    }
-    for(z=0;z<n;z++)
-    printf("%d\n",num[z]);
-    sum_even_numb(num,n);
-    multiplicatiom_numbers( num, n);
-    first_pair( num,n);
+    
+    PrintArray(array, arrayLength);
+    
+    puts("Введите значение k:");
+    const int k = dInput(); 
+
+    puts("1.");
+    printf("Сумма = %d", Task1(array, arrayLength, k));
+    
+    int* secondTaskArray = Task2(array, arrayLength);
+    puts("2.");
+    PrintArray(secondTaskArray, arrayLength);
+
+    puts("3.");
+    printf("Номер первой пары = %zu", Task3(array, arrayLength));
+
+    free(array);
+    free(secondTaskArray);
+
     return 0;
 }
-int sum_even_numb(int num[],int n)
+
+
+int dInput(void)
 {
-    int sum=0;
-    int r;
-    printf("enter the number \n");
-    scanf("%d",&r);
-    for (int z=0;z<n;z++)
+    int number = 0;
+
+    if (scanf("%d", &number) != 1) 
     {
-        if ((num[z]%2==0)&&(num[z]>r))
+        puts("Ваши данные не являются десятичными:");
+        exit(EXIT_FAILURE); 
+    }
+
+    return number;
+}
+
+size_t sizetInput(void)
+{
+    long long value = 0;
+
+    if (scanf("%lld", &value) != 1) 
+    {
+        puts("Ваши данные не являются допустимым целым числом:");
+        exit(EXIT_FAILURE);
+    }
+
+    if (value < 0) 
+    {
+        puts("Отрицательные значения не допускаются:");
+        exit(EXIT_FAILURE);
+    }
+
+    return (size_t)value;
+}
+
+void VerifyPointer(const void* pointer)
+{
+    if (pointer == NULL) 
+    {
+        puts("Ошибка выделения памяти:");
+        exit(EXIT_FAILURE);
+    }
+}
+
+int* InitializeArray(const size_t arrayLength)
+{
+    int* array = (int*)malloc(arrayLength * sizeof(int));
+    
+    VerifyPointer(array);
+    
+    return array;
+}
+
+
+int* CopyArray(const int* arrayToCopy, const size_t arrayLength)
+{
+    int* array = InitializeArray(arrayLength);
+
+    for (size_t i = 0; i < arrayLength; i++) 
+    {
+        array[i] = arrayToCopy[i];
+    }
+    
+    return array;
+}
+
+void PrintArray(const int* array, const size_t arrayLength)
+{
+    for (size_t i = 0; i < arrayLength; i++) 
+    {
+        printf("%d ", array[i]);
+    }
+
+    printf("\n");
+}
+
+void FillArrayManually(int* array, const size_t arrayLength)
+{
+    for (size_t i = 0; i < arrayLength; i++) 
+    {
+        array[i] = dInput();
+    }
+}
+
+void FillArrayRandomly(int* array, const size_t arrayLength)
+{
+    for (size_t i = 0; i < arrayLength; i++) 
+    {
+        array[i] = rand() % 401 - 100; // [-100; 200]
+    }
+}
+
+int Task1(const int* array, const size_t arrayLength, const int k)
+{
+    int sum = 0;
+    
+    for (size_t i = 0; i < arrayLength; i++) 
+    {
+        if ((array[i] % 2 == 0) && (array[i] > k)) 
         {
-            sum=sum+num[z];
-            printf("%d\n",sum);
-        }
-        else
-        {
-            printf("the array value does not match condidtion:\n");
+            sum += array[i];
         }
     }
-    printf("summ even elements %d\n",sum);
-    return 0;
+
+    return sum;
 }
-int multiplicatiom_numbers(int num[],int n)
+
+int* Task2(const int* array, const size_t arrayLength)
 {
-     for(int z=0;z< n;z++)
+    int* arrayCopy = CopyArray(array, arrayLength);
+    
+    for (size_t i = 0; i < arrayLength; i++) 
     {
-        if ((num[z]%2==0)&&(num[z]>0))
+        if ((array[i] % 2 == 0) && (array[i] > 0)) 
         {
-             printf("number is positive and even: %d\n",num[z]);
-             num[z]=num[z]*num[n-1];
-             printf("product of even positive number of an array by the last element %d\n",num[z]);
-        }
-        else
-        {
-             printf(" the invalid number  %d\n",num[z]);
+            arrayCopy[i] *= array[(arrayLength - 1)];
         }
     }
-    return 0;
+
+    return arrayCopy;
 }
-int first_pair(int num[],int n)
+
+size_t Task3(const int* array, const size_t arrayLength)
 {
-     for(int z=0;z<n;z++)
-   {
-       if(num[z]*num[z+1]<0)
-       {
-           printf("number of the first pair: %d\n",(z+1));
-           break;
-       }
-   }
-   return 0;
+    for (size_t i = 0; i < (arrayLength - 1); i++) 
+    {
+        if (array[i] * array[i + 1] < 0)
+        {
+            return (i + 1);
+        }
+    }
+
+    puts("Такой пары нет!");
+    return 0; // в случае если такой пары нет
 }
