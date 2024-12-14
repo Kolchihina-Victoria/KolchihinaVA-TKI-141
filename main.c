@@ -1,82 +1,156 @@
+#include <stdlib.h>
 #include <stdio.h>
+#include <errno.h>
+#include <float.h>
 #include <math.h>
 
 /**
-*@brief factorial считает факториал числа 
-*@return возвращает значение факториала
+ *@brief считывает целочисленное значение.
+ *@return целое значение.
 */
-int factorial(int n);
+int GetInt(void);
 
 /**
-*@brief  raising_to_the_third_power возводит число в 3 степень 
-*@return возвращает значение числа в 3 степени
+ *@brief считывает неотрицательное целое число.
+ *@return неотрицательное целое значение.
 */
-float raising_to_the_third_power(int z);
+size_t GetNonNegativeInt(void);
 
 /**
-*@brief raising_to_the_k_power возводит число в к степень
-*@return возвращает значение числа в к степени
+ *@brief  вычисляет сумму на основе заданного значения count.
+ *@param count количество слагаемых, используемых при расчете суммы.
+ *@return вычисленную сумму в виде double.
 */
-float raising_to_the_k_power(int x);
+double GetSumCount(const size_t count);
 
 /**
-*@brief res_p свыводит промежуточный результат
-*@return возвращает значение промежуточного результата
+ *@brief вычисляет значение на основе рекуррентного отношения.
+ *@param k - параметр, используемый при повторном вычислении.
+ *@return ввычисленное значение в виде double.
 */
-float res_p(int e);
+double GetReccurent(const size_t k);
 
 /**
-*@brief выводит значение выражения
-*@return  возращаеь 0 в случае успеха
+ *@brief считывает число с плавающей запятой.
+ *@return число типа double .
 */
-int main() 
+double GetDouble(void);
+
+/**
+ *@brief считывает положительное число с плавающей запятой.
+ *@return  положительное число типа double .
+*/
+double GetEpsilon(void);
+
+/**
+ *@brief вычисляет сумму на основе значения epsilon.
+ *@param epsilon - пороговое значение, используемое для остановки вычисления суммы.
+ *@return вычисленную сумму на основе указанного значения epsilon.
+*/
+double GetSumEpsilon(const double epsilon);
+
+/**
+ * @brief точка входа в программу 
+ * @return возращает summ в случае успеха
+ */
+int main(void)
 {
-    float otvet=0.0;
-    printf("Введите значение к:");
-    int k;
-    scanf("%d",&k);
-    if (k>=1)
-    {
-    for (int i=1;i<=k;i++)
-   {
-    float ryad=res_p(i);
-    otvet=otvet+ryad;
-   }
-printf("%f",otvet);
-     }
-else 
-printf("введено неверное значение:");
+    puts("Количество членов последовательности");
+    size_t count = GetNonNegativeInt();
+    printf("Сумма последовательности из %zu элементов равна %.18lf", count, GetSumCount(count));
+    
+    puts("\nВведите точность вычиления");
+    double epsilon = GetEpsilon();
+    printf("Сумма последовательности с точностью %lf равна %.18lf", epsilon, GetSumEpsilon(epsilon));
+    return EXIT_SUCCESS;
 }
-int factorial(int n)
+
+int GetInt(void)
 {
-    if (n == 1)
+    int a = 0;
+    int result = scanf("%d", &a);
+    if (result != 1)
     {
-        return 1;
+        errno = EIO;
+        perror("Не удалось считать число");
+        exit(EXIT_FAILURE);
     }
-    return n * factorial(n - 1);
+    
+    return a;
 }
-float raising_to_the_third_power(int z)
+
+size_t GetNonNegativeInt(void)
 {
-    if (z==0)
+    int a = GetInt();
+    if (a <= 0)
     {
-        return 1;
+        errno = EDOM;
+        perror("Количество членов последовательности должно быть > 0");
+        exit(EXIT_FAILURE);
     }
-    else 
-    return pow(z+1,3);
+    
+    return (size_t)a;
 }
-float raising_to_the_k_power(int x)
+
+double GetSumCount(const size_t count)
 {
-    if (x==0)
+    double summ = 0;
+    double current = -8.0;
+    for(size_t k = 1; k < count; ++k)
     {
-        return 1;
+        summ += current;
+        current *= GetReccurent(k);
+        
     }
-    else
-    return pow(-1,x);
+    
+    return summ;
 }
-float res_p(int e)
+
+double GetReccurent(const size_t k)
 {
-  float resp=raising_to_the_k_power(e)*vraising_to_the_third_power(e)/factorial(e);
-  printf("%f\n",resp);
-  return resp;
-  return 0;
+    return pow(-1,k)*((pow(k+1,3))/k) ;
+}
+
+double GetEpsilon()
+{
+    double epsilon = GetDouble();
+    if (epsilon <= DBL_EPSILON)
+    {
+        errno = EDOM;
+        perror("Точность должна быть > 0");
+        exit(EXIT_FAILURE);
+    }
+    
+    return epsilon;
+}
+
+double GetDouble(void)
+{
+    double a = 0.0;
+    int result = scanf("%lf", &a);
+    if (result != 1)
+    {
+        errno = EIO;
+        perror("Не удалось считать число");
+        exit(EXIT_FAILURE);
+    }
+    
+    return a;
+}
+
+double GetSumEpsilon(const double epsilon)
+{
+    double summ = 0;
+    double current = -8.0;
+    int k = 1;
+
+    while(fabs(current) >= epsilon)
+    {
+        summ += current;
+        current *= GetReccurent(k);
+        ++k;
+        
+    }
+    
+    return summ;
 }
