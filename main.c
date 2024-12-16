@@ -23,6 +23,13 @@ double input(void);
 */
 double Positiveinput(void);
 
+/**
+* @brief функция для проверки того, находится ли значение в пределах домена get_y
+* @param x - значение для проверки
+* @return true, если x находится в допустимой области get_y, в противном случае false
+*/
+bool is_in_domain(double x);
+
 /*
 * @brief точка входа в программу
 * @return 0 в случае успеха
@@ -40,6 +47,14 @@ int main(void){
 		printf("y=%lf\n", get_y(start));
 	}
 	return 0;
+}
+bool is_in_domain(double x) 
+{
+	if (fabs(x - 2) < DBL_EPSILON)
+		return false;
+	if (x < 0)
+		return false;
+	return true;
 }
 double get_y(const double x) {
 	return x + cos(pow(x, 0.52) + 2);
