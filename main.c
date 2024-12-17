@@ -166,7 +166,7 @@ int dInput(void)
 
 size_t sizetInput(void)
 {
-    long long value = 0;
+    int value = dInput();
 
     if (scanf("%lld", &value) != 1) 
     {
@@ -204,44 +204,48 @@ int* InitializeArray(const size_t arrayLength)
 
 int* CopyArray(const int* arrayToCopy, const size_t arrayLength)
 {
-    int* array = InitializeArray(arrayLength);
+    VerifyPointer((void*)arrayToCopy);
+    int* array = initializeArray(arrayLength);
+    if (array == NULL) {
+         return NULL;
+    }
 
-    for (size_t i = 0; i < arrayLength; i++) 
+    for (size_t i = 0; i < arrayLength; i++)
     {
         array[i] = arrayToCopy[i];
     }
-    
+
     return array;
 }
-
 void PrintArray(const int* array, const size_t arrayLength)
 {
-    for (size_t i = 0; i < arrayLength; i++) 
+    VerifyPointer((void*)array); 
+    for (size_t i = 0; i < arrayLength; i++)
     {
         printf("%d ", array[i]);
     }
-
     printf("\n");
 }
-
 void FillArrayManually(int* array, const size_t arrayLength)
 {
-    for (size_t i = 0; i < arrayLength; i++) 
+    verifyPointer((void*)array);
+    for (size_t i = 0; i < arrayLength; i++)
     {
         array[i] = dInput();
     }
 }
-
 void FillArrayRandomly(int* array, const size_t arrayLength)
 {
-    for (size_t i = 0; i < arrayLength; i++) 
+    VerifyPointer((void*)array);
+    for (size_t i = 0; i < arrayLength; i++)
     {
-        array[i] = rand() % 401 - 100; // [-100; 200]
+         array[i] = rand() % 401 - 100; // [-100; 200]
     }
 }
 
 int Task1(const int* array, const size_t arrayLength, const int k)
 {
+    VerifyPointer((void*)array);
     int sum = 0;
     
     for (size_t i = 0; i < arrayLength; i++) 
@@ -257,6 +261,7 @@ int Task1(const int* array, const size_t arrayLength, const int k)
 
 int* Task2(const int* array, const size_t arrayLength)
 {
+    VerifyPointer((void*)array);
     int* arrayCopy = CopyArray(array, arrayLength);
     
     for (size_t i = 0; i < arrayLength; i++) 
@@ -272,6 +277,7 @@ int* Task2(const int* array, const size_t arrayLength)
 
 size_t Task3(const int* array, const size_t arrayLength)
 {
+    VerifyPointer((void*)array);
     for (size_t i = 0; i < (arrayLength - 1); i++) 
     {
         if (array[i] * array[i + 1] < 0)
