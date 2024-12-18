@@ -35,17 +35,6 @@ bool is_in_domain(const double x);
 * @return 0 в случае успеха
 **/
 int main(void){
-	double value;
-	printf("Введите число: ");
-	scanf("%lf", &value);
-	if (is_in_domain(value)) 
-	{
-		printf("Число %lf находится в диапазоне.\n", value);
-	}
-	else 
-	{
-		printf("Число %lf не в диапазоне.\n", value);
-	}
 	puts("Введите начальное значение х");
 	double start=input();
         puts("Введите конечное значение х");
@@ -55,7 +44,14 @@ int main(void){
 	
 	for (start;start <= end + DBL_EPSILON; start += step) 
 	{
-		printf("y=%lf\n", get_y(start));
+		if (is_in_domain(start)) 
+		{
+			printf("y=%lf\n", get_y(start));
+		} 
+		else 
+		{
+			printf("Значение x=%lf находится вне домена\n", start);
+		}
 	}
 	return 0;
 	
