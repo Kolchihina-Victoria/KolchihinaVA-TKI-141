@@ -87,7 +87,7 @@ int GetRandomNumber();
 */
 int main(void) {
     puts("Введите размер массива:");
-    size_t arrayLength = GetNonNegativeInt();
+    size_t arrayLength = (size_t)GetNonNegativeInt();
 
     if (arrayLength == 0) {
         puts("Размер массива должен быть больше 0");
@@ -95,11 +95,6 @@ int main(void) {
     }
 
     int* array = CreateArray(arrayLength);
-    if (array == NULL)
-    {
-        return 1;
-    }
-   
     FillArray(array, arrayLength);
 
     puts("Исходный массив:");
@@ -137,15 +132,9 @@ int* CreateArray(size_t arrayLength) {
 
 void FillArray(int* array, size_t arrayLength) {
     puts("Выберите способ заполнения массива:\n");
-    puts("1. Случайными числами\n");
-    puts("2. Вводом с клавиатуры\n");
-
     int choice = GetInt();
 
     switch (choice) {
-    case 1:
-        FillArrayRandomly(array, arrayLength);
-        break;
     case 2:
         FillArrayFromKeyboard(array, arrayLength);
         break;
