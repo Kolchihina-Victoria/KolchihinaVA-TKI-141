@@ -96,7 +96,7 @@ double GetSumCount(const size_t count)
 {
     double summ = 0;
     double current = -8.0;
-    for(size_t k = 1; k < count; ++k)
+    for(size_t k = 1; k <= count; ++k)
     {
         summ += current;
         current *= GetReccurent(k);
@@ -108,10 +108,10 @@ double GetSumCount(const size_t count)
 
 double GetReccurent(const size_t k)
 {
-    return pow(-1,k)*((pow(k+1,3))/k) ;
+    return pow(-1,k)*((pow(k+1,3))/static_cast<double>(k));
 }
 
-double GetEpsilon()
+double GetEpsilon(void)
 {
     double epsilon = GetDouble();
     if (epsilon <= DBL_EPSILON)
@@ -144,7 +144,7 @@ double GetSumEpsilon(const double epsilon)
     double current = -8.0;
     int k = 1;
 
-    while(fabs(current) >= epsilon)
+    while(fabs(current) >= epsilon-DBL_EPSILON)
     {
         summ += current;
         current *= GetReccurent(k);
