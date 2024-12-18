@@ -55,8 +55,10 @@ void FillArrayManually(int* array, const size_t arrayLength);
  * @brief заполняет массив случайными значениями.
  * @param array указатель на массив.
  * @param arrayLength длина массива.
+ * @param a начало диапазона.
+ * @param b конец диапазона.
  */
-void FillArrayRandomly(int* array, const size_t arrayLength);
+void FillArrayRandomly(int* array, const size_t arrayLength, const int a, const int b);
 
 /**
  * @brief выполняет операцию над целочисленным массивом.
@@ -114,7 +116,11 @@ int main(void)
             break;
         
         case randomly:
-            FillArrayRandomly(array, arrayLength);
+            puts("Введите диапазон генерации чисел [a, b]");
+            const int a = dInput();
+            const int b = dInput();
+            
+            FillArrayRandomly(array, arrayLength, a, b);
             break;
         
         default:
@@ -204,7 +210,7 @@ int* InitializeArray(const size_t arrayLength)
 
 int* CopyArray(const int* arrayToCopy, const size_t arrayLength)
 {
-    VerifyPointer((void*)arrayToCopy);
+    VerifyPointer((array);
     int* array = initializeArray(arrayLength);
     if (array == NULL) {
          return NULL;
@@ -219,7 +225,7 @@ int* CopyArray(const int* arrayToCopy, const size_t arrayLength)
 }
 void PrintArray(const int* array, const size_t arrayLength)
 {
-    VerifyPointer((void*)array); 
+    VerifyPointer(array); 
     for (size_t i = 0; i < arrayLength; i++)
     {
         printf("%d ", array[i]);
@@ -228,24 +234,25 @@ void PrintArray(const int* array, const size_t arrayLength)
 }
 void FillArrayManually(int* array, const size_t arrayLength)
 {
-    verifyPointer((void*)array);
+    verifyPointer(array);
     for (size_t i = 0; i < arrayLength; i++)
     {
         array[i] = dInput();
     }
 }
-void FillArrayRandomly(int* array, const size_t arrayLength)
+void FillArrayRandomly(int* array, const size_t arrayLength, const int a, const int b)
 {
-    VerifyPointer((void*)array);
+    VerifyPointer(array);
+    
     for (size_t i = 0; i < arrayLength; i++)
     {
-         array[i] = rand() % 401 - 100; // [-100; 200]
+         array[i] = rand() % (2*a + 1) - b; // [-100; 200]
     }
 }
 
 int Task1(const int* array, const size_t arrayLength, const int k)
 {
-    VerifyPointer((void*)array);
+    VerifyPointer(array);
     int sum = 0;
     
     for (size_t i = 0; i < arrayLength; i++) 
@@ -261,7 +268,7 @@ int Task1(const int* array, const size_t arrayLength, const int k)
 
 int* Task2(const int* array, const size_t arrayLength)
 {
-    VerifyPointer((void*)array);
+    VerifyPointer(array);
     int* arrayCopy = CopyArray(array, arrayLength);
     
     for (size_t i = 0; i < arrayLength; i++) 
@@ -277,7 +284,7 @@ int* Task2(const int* array, const size_t arrayLength)
 
 size_t Task3(const int* array, const size_t arrayLength)
 {
-    VerifyPointer((void*)array);
+    VerifyPointer(array);
     for (size_t i = 0; i < (arrayLength - 1); i++) 
     {
         if (array[i] * array[i + 1] < 0)
