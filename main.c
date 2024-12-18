@@ -189,7 +189,7 @@ size_t sizetInput(void)
     return (size_t)value;
 }
 
-void VerifyPointer(const void* pointer)
+void VerifyPointer(const int* pointer)
 {
     if (pointer == NULL) 
     {
@@ -210,7 +210,7 @@ int* InitializeArray(const size_t arrayLength)
 
 int* CopyArray(const int* arrayToCopy, const size_t arrayLength)
 {
-    VerifyPointer((array);
+    VerifyPointer(array);
     int* array = initializeArray(arrayLength);
     if (array == NULL) {
          return NULL;
