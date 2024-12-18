@@ -28,13 +28,24 @@ double Positiveinput(void);
 * @param x - значение для проверки
 * @return true, если x находится в допустимой области get_y, в противном случае false
 */
-bool is_in_domain(double x);
+bool is_in_domain(const double x);
 
 /*
 * @brief точка входа в программу
 * @return 0 в случае успеха
 **/
 int main(void){
+	double value;
+	printf("Введите число: ");
+	scanf("%lf", &value);
+	if (is_in_domain(value)) 
+	{
+		printf("Число %lf находится в диапазоне.\n", value);
+	}
+	else 
+	{
+		printf("Число %lf не в диапазоне.\n", value);
+	}
 	puts("Введите начальное значение х");
 	double start=input();
         puts("Введите конечное значение х");
@@ -47,14 +58,11 @@ int main(void){
 		printf("y=%lf\n", get_y(start));
 	}
 	return 0;
+	
 }
-bool is_in_domain(double x) 
+bool is_in_domain(const double x) 
 {
-	if (fabs(x - 2) < DBL_EPSILON)
-		return false;
-	if (x < 0)
-		return false;
-	return true;
+	return x > DBL_EPSILON;
 }
 double get_y(const double x) {
 	return x + cos(pow(x, 0.52) + 2);
