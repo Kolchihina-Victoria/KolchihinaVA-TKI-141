@@ -1,19 +1,45 @@
 #include <iostream>
-
-int main()
+#include<string>
+using namespace std;
+class Person
 {
-    char op = '*';
-    int n = 10;
-    switch (int k{ 2 }; op)
-    {
-    case '+':
-        std::cout << n + k << std::endl;
-        break;
-    case '-':
-        std::cout << n - k << std::endl;
-        break;
-    case '*':
-        std::cout << n * k << std::endl;
-        break;
-    }
+    private:
+        string lastname;
+        string firstname;
+        string patronymic;
+    public:
+        void person(const string& ln,const string& fn,const string& pn="");
+        void show();
+        void showFormal();
+    
+};
+void Person::person(const string& ln,const string& fn,const string& pn)
+{
+    lastname=ln;
+    firstname=fn;
+    patronymic=pn;
+}
+
+void Person::show()
+{
+    cout<<lastname<<" "<<firstname<<endl;
+}
+void Person::showFormal()
+{
+    cout<<lastname<<" "<<firstname<<" "<<patronymic<<endl;
+}
+
+int main() 
+{
+    string ln,fn,pn;
+  cout<<"ввести фамилию ";
+  cin>>ln;
+  cout<<"ввести имя ";
+  cin>>fn;
+  cout<<"ввести отчество";
+  cin>>pn;
+  Person me;
+  me.person(ln,fn,pn);
+  me.show();
+  me.showFormal();
 }
