@@ -8,6 +8,10 @@ class Person
         string firstname;
         string patronymic;
     public:
+        Person()
+        {
+            
+        }
         void person(const string& ln,const string& fn,const string& pn="");
         void show();
         void showFormal();
