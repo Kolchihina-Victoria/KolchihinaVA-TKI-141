@@ -41,8 +41,7 @@ int main()
   cin>>fn;
   cout<<"ввести отчество";
   cin>>pn;
-  Person me;
-  me.person(ln,fn,pn);
+  Person me(ln,fn,pn);
   me.show();
   me.showFormal();
 }
