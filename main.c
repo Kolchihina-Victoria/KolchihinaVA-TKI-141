@@ -1,7 +1,6 @@
 #include <iostream>
 #include <string>
 #include <cmath>
-#include <stdexcept>
 
 // Определение класса Point
 class Point {
