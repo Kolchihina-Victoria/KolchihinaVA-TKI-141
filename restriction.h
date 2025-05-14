@@ -6,8 +6,11 @@
  */
 class Restriction {
 public:
-    virtual ~Restriction() = default;
-    
+    /**
+     * @brief Виртуальный деструктор
+     */
+    virtual ~Restriction() {}
+
     /**
      * @brief Преобразует ограничение в строку
      * @return Строковое описание ограничения
@@ -21,5 +24,8 @@ public:
      */
     static Restriction* ReadFromStream(std::istream& is);
 
+    /**
+     * @brief Оператор вывода ограничения в поток
+     */
     friend std::ostream& operator<<(std::ostream& os, const Restriction& r);
 };
