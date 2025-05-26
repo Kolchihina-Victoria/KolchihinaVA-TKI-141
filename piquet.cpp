@@ -23,7 +23,8 @@ std::string Piquet::ToString() const {
 
 // Реализации операторов сравнения
 bool Piquet::operator==(const Piquet& other) const {
-    return (number == other.number && shift == other.shift);
+    const double epsilon = 1e-9;
+    return (number == other.number) && (std::abs(shift - other.shift) < epsilon);
 }
 
 bool Piquet::operator!=(const Piquet& other) const {
@@ -31,9 +32,13 @@ bool Piquet::operator!=(const Piquet& other) const {
 }
 
 bool Piquet::operator<(const Piquet& other) const {
-    if (number < other.number) return true;
-    if (number == other.number && shift < other.shift) return true;
-    return false;
+    const double epsilon = 1e-9;
+
+    if (number < other.number - epsilon) return true;
+    if (number > other.number + epsilon) return false;
+
+    // Числа считаем равными, сравниваем shift
+    return shift < other.shift;
 }
 
 bool Piquet::operator>(const Piquet& other) const {
