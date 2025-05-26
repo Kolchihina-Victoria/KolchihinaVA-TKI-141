@@ -44,15 +44,11 @@ int main() {
 
         // Ввод радиуса
         double radius = getCoordinate("Введите радиус: ");
-        if (radius <= 0) {
-            throw std::invalid_argument("Радиус должен быть положительным числом");
-        }
+       
 
         // Ввод высоты
         double height = getCoordinate("Введите высоту: ");
-        if (height <= 0) {
-            throw std::invalid_argument("Высота должна быть положительным числом");
-        }
+        
 
         // Создание цилиндра
         Cylinder cylinder(center, radius, height);
