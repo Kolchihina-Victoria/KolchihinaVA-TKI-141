@@ -9,7 +9,12 @@ public:
     /**
      * @brief Виртуальный деструктор
      */
-    virtual ~Restriction() {}
+    virtual ~Restriction() = default;
+//реализую статический метод и оператор вывода:
+    virtual std::string ToString() const = 0;
+    static Restriction* ReadFromStream(std::istream& is);
+    friend std::ostream& operator<<(std::ostream& os, const Restriction& r);
+};
 
     /**
      * @brief Преобразует ограничение в строку
