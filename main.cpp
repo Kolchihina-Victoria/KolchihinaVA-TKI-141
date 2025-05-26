@@ -23,7 +23,7 @@ int main() {
     Restriction* restriction = SpeedRestriction::ReadFromStream(std::cin);
 
     if (restriction) {
-        std::cout << "Введенное ограничение: " << *restriction << std::endl;
+        std::cout << "Введенное ограничение: " << restriction << std::endl;
         delete restriction;
     }
 
