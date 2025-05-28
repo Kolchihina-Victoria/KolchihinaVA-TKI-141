@@ -1,29 +1,22 @@
 #include <iostream>
-#include "Vector.h"
-
+#include "../Library/IntVector.h"
+/**
+ @brief Функция main
+ @return 1 в случае успеха, иначе - 0
+*/
 int main() {
-    // Демонстрация работы с Vector
-    Vector myVector = {10, 20, 30, 40, 50};
-    std::cout << "Vector: " << myVector.toString() << std::endl;
+    IntVector vec = { 1, 2, 3 };
+    vec << 4 << 5;
 
-    myVector << 60;
-    std::cout << "After adding 60: " << myVector.toString() << std::endl;
+    std::cout << "Vector: " << vec.to_string() << std::endl;
 
-    myVector.insert(2, 25);
-    std::cout << "After inserting 25 at index 2: " << myVector.toString() << std::endl;
+    int removed;
+    vec >> removed;
+    std::cout << "Removed: " << removed << std::endl;
 
-    myVector.remove(3);
-    std::cout << "After removing element at index 3: " << myVector.toString() << std::endl;
+    std::cout << "Index of 2: " << vec.find(2) << std::endl;
 
-    std::cout << "Search for 40: " << myVector.search(40) << std::endl;
-    std::cout << "Is empty? " << myVector.isEmpty() << std::endl;
-
-    Vector anotherVector;
-    anotherVector = myVector;
-    std::cout << "Copied Vector: " << anotherVector.toString() << std::endl;
-      anotherVector >> 1;  //remove last element
-     std::cout << "After removing element last: " << anotherVector.toString() << std::endl;
-
+    std::cout << "Element at index 0: " << vec[0] << std::endl;
 
     return 0;
 }
