@@ -9,29 +9,13 @@
  * @return Введенная координата.
  * @throws std::invalid_argument Если введены некорректные данные.
  */
-double getCoordinate(const std::string& message) {
-    std::cout << message;
-    double coordinate;
-    std::cin >> coordinate;
-
-    if (std::cin.fail()) {
-        std::cin.clear(); // Очистить флаг ошибки
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Очистить поток
-        throw std::invalid_argument("Некорректный ввод");
-    }
-    return coordinate;
-}
+double getCoordinate(const std::string& message); // 1. Объявление функции
 
 /**
  * @brief Запросить у пользователя координаты точки.
  * @return Объект Point с введенными координатами.
  */
-Point getPoint() {
-    double x = getCoordinate("Введите координату x: ");
-    double y = getCoordinate("Введите координату y: ");
-    double z = getCoordinate("Введите координату z: ");
-    return Point(x, y, z);
-}
+Point getPoint();
 
 /**
  * @brief Основная функция программы.
@@ -44,11 +28,11 @@ int main() {
 
         // Ввод радиуса
         double radius = getCoordinate("Введите радиус: ");
-       
+
 
         // Ввод высоты
         double height = getCoordinate("Введите высоту: ");
-        
+
 
         // Создание цилиндра
         Cylinder cylinder(center, radius, height);
@@ -71,4 +55,28 @@ int main() {
         std::cerr << "Ошибка: " << e.what() << std::endl;
         return 1;
     }
+}
+
+// 2. Реализация функций после main
+
+double getCoordinate(const std::string& message) {
+    std::cout << message;
+    double coordinate;
+
+
+    std::cin >> coordinate;
+
+    if (std::cin.fail()) {
+        std::cin.clear(); // Очистить флаг ошибки
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Очистить поток
+        throw std::invalid_argument("Некорректный ввод");
+    }
+    return coordinate;
+}
+
+Point getPoint() {
+    double x = getCoordinate("Введите координату x: ");
+    double y = getCoordinate("Введите координату y: ");
+    double z = getCoordinate("Введите координату z: ");
+    return Point(x, y, z);
 }
