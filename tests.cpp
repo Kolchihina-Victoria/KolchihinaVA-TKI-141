@@ -117,8 +117,3 @@ TEST(SpeedRestrictionTest, ReadFromStreamInvalidOrder) {
     auto restriction = SpeedRestriction::ReadFromStream(input);
     EXPECT_EQ(restriction, nullptr);
 }
-
-int main(int argc, char **argv) {
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
-}
