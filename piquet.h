@@ -22,9 +22,8 @@ public:
      * @param num Номер пикета (по умолчанию 0)
      * @param sh Смещение от пикета в метрах (по умолчанию 0.0)
      * @param len Длина пикета в метрах (по умолчанию 100.0)
-     * @param standard Флаг стандартного пикета (по умолчанию true)
      */
-    explicit Piquet(int num = 0, double sh = 0.0, double len = 100.0, bool standard = true);
+    explicit Piquet(int num = 0, double sh = 0.0, double len = 100.0); // Исправлено: убран параметр bool standard
 
     /**
      * @brief Преобразует пикет в строку формата "ПК X+YY.YY"
