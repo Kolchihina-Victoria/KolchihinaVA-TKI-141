@@ -12,12 +12,12 @@ public:
     /**
      * @brief Конструктор по умолчанию. Создает пустой вектор.
      */
-    IntVector() : data(nullptr), count(0), capacity(0) {}
+    IntVector() : data(nullptr), count(0) {}
     /**
     * @brief Конструктор со списком инициализации.
     * @param list Список значений для инициализации вектора.
     */
-    IntVector(std::initializer_list<int> list) : data(nullptr), count(0), capacity(0) {
+    IntVector(std::initializer_list<int> list) : data(nullptr), count(0) {
         resize(list.size());
         for (const auto& value : list) {
             data[count++] = value;
@@ -27,9 +27,9 @@ public:
      * @brief Конструктор копирования.
      * @param other Другой объект IntVector для копирования.
      */
-    IntVector(const IntVector& other) : data(nullptr), count(other.count), capacity(other.count) {
-        if (capacity > 0) {
-            data = new int[capacity];
+    IntVector(const IntVector& other) : data(nullptr), count(other.count) {
+        if (count > 0) {
+            data = new int[count];
             for (size_t i = 0; i < count; ++i) {
                 data[i] = other.data[i];
             }
@@ -39,10 +39,9 @@ public:
     * @brief Конструктор перемещения.
     * @param other Временный объект IntVector.
     */
-    IntVector(IntVector&& other) noexcept : data(other.data), count(other.count), capacity(other.capacity) {
+    IntVector(IntVector&& other) noexcept : data(other.data), count(other.count) {
         other.data = nullptr;
         other.count = 0;
-        other.capacity = 0;
     }
     /**
      * @brief Деструктор.
@@ -60,9 +59,8 @@ public:
         if (this != &other) {
             delete[] data;
             count = other.count;
-            capacity = other.count; // Исправление: точно размер массива равен количеству элементов
-            if (capacity > 0) {
-                data = new int[capacity];
+            if (count > 0) {
+                data = new int[count];
                 for (size_t i = 0; i < count; ++i) {
                     data[i] = other.data[i];
                 }
@@ -82,11 +80,9 @@ public:
             delete[] data;
             data = other.data;
             count = other.count;
-            capacity = other.capacity;
 
             other.data = nullptr;
             other.count = 0;
-            other.capacity = 0;
         }
         return *this;
     }
@@ -121,10 +117,8 @@ public:
      * @return Ссылка на текущий объект.
      */
     IntVector& operator<<(int value) {
-        if (count == capacity) {
-            resize(capacity > 0 ? capacity * 2 : 1);
-        }
-        data[count++] = value;
+        resize(count + 1);
+        data[count - 1] = value;
         return *this;
     }
     /**
@@ -138,6 +132,7 @@ public:
             throw std::out_of_range("Vector is empty");
         }
         value = data[--count];
+        resize(count);
         return *this;
     }
 
@@ -189,20 +184,19 @@ public:
 private:
     int* data;
     size_t count;
-    size_t capacity;
 
     /**
-    * @brief Изменяет вместимость массива.
-    * @param new_capacity Новая вместимость.
-    * 
-    *  чтобы вместимость точно соответствовала текущему размеру `count`.
+    * @brief Изменяет вместимость массива до точного размера count.
+    * @param new_capacity Новый размер массива, равный текущему количеству элементов.
     */
     void resize(size_t new_capacity) {
-        // Исправление: точно размер под count
         delete[] data;
-        capacity = new_capacity;
-        data = (capacity > 0) ? new int[capacity] : nullptr;
-        //  при вызове resize из конструктора или методов
-        // вставки,  уже добавляются элементы вручную, так что  просто выделяется память.
+        if (new_capacity > 0) {
+            data = new int[new_capacity];
+        } else {
+            data = nullptr;
+        }
+        // при вызове resize из методов вставки или удаления
+        // массив выделяется под точное число элементов.
     }
 };
