@@ -1,4 +1,4 @@
-// Task1Exercise.h
+
 #pragma once
 #include "Exercise.h"
 
