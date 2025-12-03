@@ -3,8 +3,8 @@
 
 namespace miit::algebra
 {
-    void Task1Exercise::task1()
-    {
+    void Task1Exercise::task()   //было task1
+{
         int last_negative_index = find_last_negative_index();
         if (last_negative_index != -1)
         {
