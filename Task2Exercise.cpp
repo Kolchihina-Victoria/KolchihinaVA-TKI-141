@@ -4,7 +4,7 @@
 
 namespace miit::algebra
 {
-    void Task2Exercise::task2()
+    void Task2Exercise::task()  // было task2
     {
         auto& mat = *matrix;
         auto mask = std::make_unique<bool[]>(mat.get_size());
