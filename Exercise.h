@@ -1,3 +1,4 @@
+// Exercise.h
 #pragma once
 #include "Matrix.h"
 #include "Generator.h"
@@ -14,9 +15,9 @@ namespace miit::algebra
     public:
         Exercise(std::unique_ptr<Matrix<int>> matrix, std::unique_ptr<Generator> generator);
         virtual ~Exercise() = default;
-virtual void task1() = 0;  // Замена последнего отрицательного
-        virtual void task2() = 0;  // Удаление элементов с одинаковыми цифрами
-        virtual Matrix<int> task3() const = 0;  // Создание массива M из P
+        
+       //замена 3 методов на 1
+        virtual void task() = 0;
         
         Matrix<int>& get_matrix();
         const Matrix<int>& get_matrix() const;
