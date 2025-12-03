@@ -6,6 +6,8 @@
 
 namespace miit::algebra
 {
+    class Generator;  // Forward declaration
+    
     template<typename T>
     class Matrix
     {
@@ -17,16 +19,15 @@ namespace miit::algebra
         // Конструкторы
         Matrix();
         explicit Matrix(size_t size);
-        Matrix(size_t size, const T& value);
-        Matrix(const Matrix& other);
-        Matrix(Matrix&& other) noexcept;
-        
+        // Убран: Matrix(size_t size, const T& value);
+        // Убран: Matrix(const Matrix& other);
+        // Убран: Matrix(Matrix&& other) noexcept;
+
         // Деструктор
         ~Matrix() = default;
 
         // Операторы присваивания
-        Matrix& operator=(const Matrix& other);
-        Matrix& operator=(Matrix&& other) noexcept;
+        // Убраны: операторы присваивания
 
         // Операторы сдвига
         Matrix operator<<(int shift) const;
@@ -44,8 +45,5 @@ namespace miit::algebra
 
         // Методы заполнения
         void fill(Generator& generator);
-        
-        // Удаление элементов (для задания 2)
-        void remove_elements(const std::unique_ptr<bool[]>& mask);
     };
 }
