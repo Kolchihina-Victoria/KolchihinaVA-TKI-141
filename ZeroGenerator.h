@@ -1,5 +1,8 @@
+
 #pragma once
 #include "Generator.h"
+#include <iostream>
+#include <memory>
 
 namespace miit::algebra
 {
@@ -8,5 +11,8 @@ namespace miit::algebra
     public:
         ZeroGenerator() = default;
         int generate() override;
+        
+        // Статический метод для выбора способа заполнения
+        static std::unique_ptr<Generator> choose_fill_method();
     };
 }
