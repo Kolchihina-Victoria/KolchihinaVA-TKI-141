@@ -2,10 +2,10 @@
 
 namespace miit::algebra
 {
-    Matrix<int> Task3Exercise::task() // было task3 возращал Matrix<int>, но теперь метод void 
+   void Task3Exercise::task()  //БЫЛО: Matrix<int> task() — ИЗМЕНЕНО НА void
     {
         auto& P = *matrix;
-        Matrix<int> M(P.get_size());
+         result = Matrix<int>(P.get_size());  // результат сохраняется в член класса
         
         for (size_t i = 0; i < P.get_size(); ++i)
         {
@@ -21,6 +21,6 @@ else
             }
         }
         
-        return M;
+     //нет возрата значения
     }
 }
