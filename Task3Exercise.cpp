@@ -2,9 +2,9 @@
 
 namespace miit::algebra
 {
-    Matrix<int> Task3Exercise::task3() const
+    Matrix<int> Task3Exercise::task() // было task3 возращал Matrix<int>, но теперь метод void 
     {
-        const auto& P = *matrix;
+        auto& P = *matrix;
         Matrix<int> M(P.get_size());
         
         for (size_t i = 0; i < P.get_size(); ++i)
