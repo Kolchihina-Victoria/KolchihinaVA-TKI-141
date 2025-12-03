@@ -12,12 +12,12 @@ namespace miit::algebra
             if (P[i] % 2 == 0)
             {
                 // Если элемент четный: Mi = i * Pi
-                M[i] = static_cast<int>(i) * P[i];
+                result[i] = static_cast<int>(i) * P[i]; // исправлено: result вместо M
             }
 else
             {
                 // Если элемент нечетный: Mi = -Pi
-                M[i] = -P[i];
+                result[i] = -P[i];// исправлено: result вместо M
             }
         }
         
