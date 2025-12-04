@@ -1,93 +1,116 @@
 #include <iostream>
 #include <memory>
 #include <vector>
-#include "Book.h"
-#include "AuthorBook.h"
-#include "MultiAuthorBook.h"
 #include "Library.h"
 
-
 int main() {
-    // Устанавливаем локаль для поддержки русских символов
     setlocale(LC_ALL, "Russian");
     
-    // СОЗДАНИЕ БИБЛИОТЕКИ 
+    //  СОЗДАНИЕ БИБЛИОТЕКИ 
     Library library;
     
-    // СОЗДАНИЕ РАЗЛИЧНЫХ ТИПОВ КНИГ 
-    // Демонстрация создания книги с одним автором
-    auto book1 = std::make_shared<AuthorBook>(
-        "Мастер и Маргарита", "Михаил Булгаков", 
-        "Роман", "Эксмо", "Стеллаж 1, Полка 3", 1967);
+    //  СОЗДАНИЕ АВТОРОВ 
+    auto author1 = library.addAuthor("Михаил Булгаков", "Русский писатель, драматург");
+    auto author2 = library.addAuthor("Федор Достоевский", "Русский писатель, мыслитель");
+    auto author3 = library.addAuthor("Иван Петров");
+    auto author4 = library.addAuthor("Анна Сидорова");
+    auto author5 = library.addAuthor("Петр Иванов");
+    auto author6 = library.addAuthor("Томас Кормен", "Американский ученый в области информатики");
+    auto author7 = library.addAuthor("Александр Эйнштейн", "Физик-теоретик, Нобелевский лауреат");
+    auto author8 = library.addAuthor("Никола Тесла", "Изобретатель в области электротехники");
     
-    auto book2 = std::make_shared<AuthorBook>(
-        "Преступление и наказание", "Федор Достоевский", 
-        "Роман", "АСТ", "Стеллаж 2, Полка 1", 1866);
+    // СОЗДАНИЕ И ДОБАВЛЕНИЕ КНИГ 
     
-    // Демонстрация создания книги с несколькими авторами
-    auto book3 = std::make_shared<MultiAuthorBook>(
-        "C++ для начинающих", 
-        std::vector<std::string>{"Иван Петров", "Анна Сидорова", "Петр Иванов"},
-        "Программирование", "Питер", "Стеллаж 3, Полка 2", 2021);
+    // Книга с одним автором (через метод библиотеки)
+    library.addAuthorBook("Мастер и Маргарита", author1->getId(),
+                         "Роман", "Эксмо", "Стеллаж 1, Полка 3", 1967);
     
+    // Книга с одним автором (через метод библиотеки)
+    library.addAuthorBook("Преступление и наказание", author2->getId(),
+                         "Роман", "АСТ", "Стеллаж 2, Полка 1", 1866);
+    
+    // Книга с несколькими авторами (через метод библиотеки)
+    library.addMultiAuthorBook("C++ для начинающих", 
+                              {author3->getId(), author4->getId(), author5->getId()},
+                              "Программирование", "Питер", "Стеллаж 3, Полка 2", 2021);
+    
+    // Книга с одним автором (создание напрямую и добавление)
     auto book4 = std::make_shared<AuthorBook>(
-        "Алгоритмы и структуры данных", "Томас Кормен", 
+        "Алгоритмы и структуры данных", author6,
         "Программирование", "Вильямс", "Стеллаж 3, Полка 1", 2009);
+    library.addAuthorBook(book4);
     
+    // Книга с несколькими авторами (создание напрямую и добавление)
     auto book5 = std::make_shared<MultiAuthorBook>(
         "Физика для всех", 
-        std::vector<std::string>{"Александр Эйнштейн", "Никола Тесла"},
+        {author7, author8},
         "Наука", "Наука", "Стеллаж 4, Полка 1", 2018);
+    library.addMultiAuthorBook(book5);
     
-    // : ДОБАВЛЕНИЕ КНИГ В БИБЛИОТЕКУ 
-    library.addBook(book1);
-    library.addBook(book2);
-    library.addBook(book3);
-    library.addBook(book4);
-    library.addBook(book5);
+    // ДЕМОНСТРАЦИЯ РАБОТЫ БИБЛИОТЕКИ 
     
-    //  ДЕМОНСТРАЦИЯ ПОЛИМОРФИЗМА
-    // Итерация по коллекции базового типа Book
-    std::cout << "=== Все книги в библиотеке ===" << std::endl;
+    std::cout << "Все авторы в библиотеке " << std::endl;
+    for (const auto& author : library.getAllAuthors()) {
+        author->printInfo();
+    }
+    
+    std::cout << "\n Все книги в библиотеке ===" << std::endl;
     for (const auto& book : library.getAllBooks()) {
-        // Полиморфный вызов: book->printInfo() вызывает правильную версию метода
-        // в зависимости от фактического типа объекта
         book->printInfo();
     }
     
-    //  ДЕМОНСТРАЦИЯ ПОИСКА 
+    // ДЕМОНСТРАЦИЯ ПОИСКА 
     
-    // Поиск по названию
-    std::cout << "\n=== Поиск книг по названию 'Мастер и Маргарита' ===" << std::endl;
+    std::cout << "\n Поиск книг по названию 'Мастер и Маргарита' " << std::endl;
     auto booksByTitle = library.findBooksByTitle("Мастер и Маргарита");
     for (const auto& book : booksByTitle) {
         book->printInfo();
     }
     
-    // Поиск по автору
-    std::cout << "\n=== Поиск книг автора 'Томас Кормен' ===" << std::endl;
-    auto booksByAuthor = library.findBooksByAuthor("Томас Кормен");
-    for (const auto& book : booksByAuthor) {
+    std::cout << "\n=== Поиск книг автора 'Томас Кормен' (по имени) ===" << std::endl;
+    auto booksByAuthorName = library.findBooksByAuthorName("Кормен");
+    for (const auto& book : booksByAuthorName) {
         book->printInfo();
     }
     
-    // Поиск по тематике
-    std::cout << "\n=== Поиск книг по тематике 'Программирование' ===" << std::endl;
+    std::cout << "\n=== Все книги автора с ID " << author6->getId() << " ===" << std::endl;
+    auto booksByAuthorId = library.findBooksByAuthor(author6->getId());
+    for (const auto& book : booksByAuthorId) {
+        book->printInfo();
+    }
+    
+    std::cout << "\n Поиск книг по тематике 'Программирование' " << std::endl;
     auto booksByTheme = library.findBooksByTheme("Программирование");
     for (const auto& book : booksByTheme) {
         book->printInfo();
     }
     
-    // Поиск по издательству
-    std::cout << "\n=== Поиск книг издательства 'Питер' ===" << std::endl;
+    std::cout << "\n Поиск книг издательства 'Питер' " << std::endl;
     auto booksByPublisher = library.findBooksByPublisher("Питер");
     for (const auto& book : booksByPublisher) {
         book->printInfo();
     }
     
-    // Поиск местоположения
-    std::cout << "\n=== Местонахождение книги 'Алгоритмы и структуры данных' ===" << std::endl;
+    std::cout << "\n=== Поиск авторов по имени 'Петр' ===" << std::endl;
+    auto foundAuthors = library.findAuthorsByName("Петр");
+    for (const auto& author : foundAuthors) {
+        author->printInfo();
+    }
+    
+    std::cout << "\n Местонахождение книги 'Алгоритмы и структуры данных' " << std::endl;
     std::cout << library.findBookLocation("Алгоритмы и структуры данных") << std::endl;
     
-    return 0;  // Успешное завершение программы
+    // ДЕМОНСТРАЦИЯ РАЗНЫХ ТИПОВ КНИГ 
+    
+    std::cout << "\n Книги с одним автором " << std::endl;
+    for (const auto& book : library.getAllAuthorBooks()) {
+        book->printInfo();
+    }
+    
+    std::cout << "\n Книги с несколькими авторами " << std::endl;
+    for (const auto& book : library.getAllMultiAuthorBooks()) {
+        book->printInfo();
+    }
+    
+    return 0;
 }
