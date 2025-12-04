@@ -9,16 +9,64 @@ namespace miit::algebra
     Matrix<T>::Matrix() : size(0), data(nullptr) {}
 
     template<typename T>
-    Matrix<T>::Matrix(size_t size) : size(size), data(std::make_unique<T[]>(size)) {}
+    Matrix<T>::Matrix(const size_t size) : size(size), data(std::make_unique<T[]>(size)) {}
+
+    template<typename T>
+    Matrix<T>::Matrix(const size_t size, const T& value) : size(size), data(std::make_unique<T[]>(size))
+    {
+        for (size_t i = 0; i < size; ++i)
+        {
+            data[i] = value;
+        }
+    }
+
+    template<typename T>
+    Matrix<T>::Matrix(const Matrix& other) : size(other.size), data(std::make_unique<T[]>(other.size))
+    {
+        for (size_t i = 0; i < size; ++i)
+        {
+            data[i] = other.data[i];
+        }
+    }
+
+    template<typename T>
+    Matrix<T>::Matrix(Matrix&& other) noexcept : size(other.size), data(std::move(other.data))
+    {
+        other.size = 0;
+    }
+
+    template<typename T>
+    Matrix<T>& Matrix<T>::operator=(const Matrix& other)
+    {
+        if (this != &other)
+        {
+            auto temp = std::make_unique<T[]>(other.size);
+            for (size_t i = 0; i < other.size; ++i)
+            {
+                temp[i] = other.data[i];
+            }
+            data = std::move(temp);
+            size = other.size;
+        }
+        return *this;
+    }
+
+    template<typename T>
+    Matrix<T>& Matrix<T>::operator=(Matrix&& other) noexcept
+    {
+        if (this != &other)
+        {
+            data = std::move(other.data);
+            size = other.size;
+            other.size = 0;
+        }
+        return *this;
+    }
 
     template<typename T>
     Matrix<T> Matrix<T>::operator<<(int shift) const
     {
-        Matrix result(size);
-        for (size_t i = 0; i < size; ++i)
-        {
-            result.data[i] = data[i];
-        }
+        Matrix result(*this);
         result <<= shift;
         return result;
     }
@@ -26,11 +74,7 @@ namespace miit::algebra
     template<typename T>
     Matrix<T> Matrix<T>::operator>>(int shift) const
     {
-        Matrix result(size);
-        for (size_t i = 0; i < size; ++i)
-        {
-            result.data[i] = data[i];
-        }
+        Matrix result(*this);
         result >>= shift;
         return result;
     }
@@ -59,14 +103,14 @@ namespace miit::algebra
     }
 
     template<typename T>
-    T& Matrix<T>::operator[](size_t index)
+    T& Matrix<T>::operator[](const size_t index)
     {
         if (index >= size) throw std::out_of_range("Index out of range");
         return data[index];
     }
 
     template<typename T>
-    const T& Matrix<T>::operator[](size_t index) const
+    const T& Matrix<T>::operator[](const size_t index) const
     {
         if (index >= size) throw std::out_of_range("Index out of range");
         return data[index];
@@ -101,6 +145,6 @@ namespace miit::algebra
         }
     }
 
-    // Явная  для int
+    // Явная инстанцирование для int
     template class Matrix<int>;
 }
