@@ -1,5 +1,5 @@
-#include "Book.h"  
-#include <iostream> 
+#include "Book.h"
+#include <iostream>
 
 // Реализация конструктора с инициализацией полей через список инициализации
 Book::Book(const std::string& title, const std::string& theme, 
@@ -10,7 +10,7 @@ Book::Book(const std::string& title, const std::string& theme,
       location(location),    // Инициализация местоположения
       year(year) {}          // Инициализация года
 
-// Реализация геттеров - простые методы доступа к полям
+// Реализация геттеров
 std::string Book::getTitle() const { return title; }
 std::string Book::getTheme() const { return theme; }
 std::string Book::getPublisher() const { return publisher; }
@@ -18,7 +18,6 @@ std::string Book::getLocation() const { return location; }
 int Book::getYear() const { return year; }
 
 // Реализация метода вывода информации
-// Выводит общую информацию, общую для всех книг
 void Book::printInfo() const {
     std::cout << "Название: " << title << std::endl;
     std::cout << "Тематика: " << theme << std::endl;
