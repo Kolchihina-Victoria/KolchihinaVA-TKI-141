@@ -1,32 +1,45 @@
-// AuthorBook.cpp - Реализация методов класса AuthorBook
-// Назначение: Содержит определения методов класса AuthorBook
-
 #include "AuthorBook.h"
 #include <iostream>
 
-// Конструктор: сначала вызывает конструктор базового класса,
-// затем инициализирует собственное поле author
-AuthorBook::AuthorBook(const std::string& title, const std::string& author, 
+// Конструктор с указателем на автора
+AuthorBook::AuthorBook(const std::string& title, const std::shared_ptr<Author>& author,
                        const std::string& theme, const std::string& publisher, 
                        const std::string& location, int year)
     : Book(title, theme, publisher, location, year),  // Вызов конструктора Book
-      author(author) {}                               // Инициализация author
+      author(author) {}
 
-// Возвращает автора книги
-std::string AuthorBook::getAuthor() const {
+// Конструктор с созданием нового автора
+AuthorBook::AuthorBook(const std::string& title, const std::string& authorName,
+                       const std::string& theme, const std::string& publisher, 
+                       const std::string& location, int year)
+    : Book(title, theme, publisher, location, year),
+      author(std::make_shared<Author>(0, authorName)) {}  // Создаем автора с временным ID
+
+// Получение автора
+std::shared_ptr<Author> AuthorBook::getAuthor() const {
     return author;
 }
 
 // Реализация абстрактного метода getAuthors()
-// Возвращает вектор строк с одним элементом
-std::vector<std::string> AuthorBook::getAuthors() const {
-    return {author};  // Создание вектора с одним элементом
+std::vector<std::shared_ptr<Author>> AuthorBook::getAuthors() const {
+    return {author};  // Вектор с одним элементом - автором
+}
+
+// Реализация метода для получения имен авторов
+std::vector<std::string> AuthorBook::getAuthorNames() const {
+    if (author) {
+        return {author->getName()};
+    }
+    return {};
 }
 
 // Переопределенный метод вывода информации
-// Сначала вызывает метод базового класса, затем добавляет свою информацию
 void AuthorBook::printInfo() const {
     Book::printInfo();  // Вывод общей информации
-    std::cout << "Автор: " << author << std::endl;  // Добавление информации об авторе
-    std::cout << "-------------------" << std::endl;  // Разделитель для читаемости
+    std::cout << "Автор: ";
+    if (author) {
+        std::cout << author->getName();
+    }
+    std::cout << std::endl;
+    std::cout << "-" << std::endl;
 }
