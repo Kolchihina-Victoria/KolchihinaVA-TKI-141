@@ -1,25 +1,28 @@
-#include "Book.h"
+#include "Book.h"  
+#include <iostream> 
 
-Book::Book(const std::string& title, const std::vector<std::string>& authors,
-           const std::string& topic, const std::string& publisher, const std::string& location)
-    : title(title), authors(authors), topic(topic), publisher(publisher), location(location) {}
+// Реализация конструктора с инициализацией полей через список инициализации
+Book::Book(const std::string& title, const std::string& theme, 
+           const std::string& publisher, const std::string& location, int year)
+    : title(title),          // Инициализация названия
+      theme(theme),          // Инициализация тематики
+      publisher(publisher),  // Инициализация издательства
+      location(location),    // Инициализация местоположения
+      year(year) {}          // Инициализация года
 
-const std::string& Book::getTitle() const {
-    return title;
-}
+// Реализация геттеров - простые методы доступа к полям
+std::string Book::getTitle() const { return title; }
+std::string Book::getTheme() const { return theme; }
+std::string Book::getPublisher() const { return publisher; }
+std::string Book::getLocation() const { return location; }
+int Book::getYear() const { return year; }
 
-const std::vector<std::string>& Book::getAuthors() const {
-    return authors;
-}
-
-const std::string& Book::getTopic() const {
-    return topic;
-}
-
-const std::string& Book::getPublisher() const {
-    return publisher;
-}
-
-const std::string& Book::getLocation() const {
-    return location;
+// Реализация метода вывода информации
+// Выводит общую информацию, общую для всех книг
+void Book::printInfo() const {
+    std::cout << "Название: " << title << std::endl;
+    std::cout << "Тематика: " << theme << std::endl;
+    std::cout << "Издательство: " << publisher << std::endl;
+    std::cout << "Местонахождение: " << location << std::endl;
+    std::cout << "Год издания: " << year << std::endl;
 }
