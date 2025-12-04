@@ -1,30 +1,36 @@
 #pragma once
+
 // Назначение: Определяет класс для книг с несколькими авторами
-// Наследует: Класс Book
-// Особенность: Хранит авторов в векторе, поддерживает соавторство
 
 #include "Book.h"
+#include "Author.h"
 #include <string>
 #include <vector>
+#include <memory>
 
 // Класс для представления книги с несколькими авторами
 // Наследует все поля и методы от Book
 class MultiAuthorBook : public Book {
 private:
-    // Поле для хранения нескольких авторов
-    std::vector<std::string> authors;  // Вектор авторов
-    
+    std::vector<std::shared_ptr<Author>> authors;  // Вектор указателей на авторов
+
 public:
-    // Конструктор принимает вектор авторов вместо одного автора
-    MultiAuthorBook(const std::string& title, const std::vector<std::string>& authors, 
+    // Конструктор принимает вектор авторов
+    MultiAuthorBook(const std::string& title, const std::vector<std::shared_ptr<Author>>& authors,
                     const std::string& theme, const std::string& publisher, 
                     const std::string& location, int year);
     
+    // Конструктор с именами авторов (для обратной совместимости)
+    MultiAuthorBook(const std::string& title, const std::vector<std::string>& authorNames,
+                    const std::string& theme, const std::string& publisher, 
+                    const std::string& location, int year);
+
     // Реализация чисто виртуального метода из базового класса
-    // Возвращает копию вектора авторов
-    std::vector<std::string> getAuthors() const override;
+    std::vector<std::shared_ptr<Author>> getAuthors() const override;
+    
+    // Реализация метода для получения имен авторов
+    std::vector<std::string> getAuthorNames() const override;
     
     // Переопределение виртуального метода для вывода информации
-    // Выводит всех авторов через запятую
     void printInfo() const override;
 };
