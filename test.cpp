@@ -1,79 +1,81 @@
-
-
 #include <gtest/gtest.h>
-#include "Book.h"
-#include "AuthorBook.h"
-#include "MultiAuthorBook.h"
 #include "Library.h"
 
-// === ТЕСТЫ ДЛЯ КЛАССА AuthorBook ===
-
-// Тест конструктора и геттеров AuthorBook
-TEST(AuthorBookTest, ConstructorAndGetters) {
-    // Создаем тестовый объект
-    AuthorBook book("Test", "Author", "Theme", "Publisher", "Location", 2023);
+// Тесты для класса Author
+TEST(AuthorTest, ConstructorAndGetters) {
+    Author author(1, "Test Author", "Test Biography");
     
-    // Проверяем, что все поля инициализированы правильно
-    EXPECT_EQ(book.getTitle(), "Test");
-    EXPECT_EQ(book.getAuthor(), "Author");
-    EXPECT_EQ(book.getTheme(), "Theme");
-    EXPECT_EQ(book.getPublisher(), "Publisher");
-    EXPECT_EQ(book.getLocation(), "Location");
+    EXPECT_EQ(author.getId(), 1);
+    EXPECT_EQ(author.getName(), "Test Author");
+    EXPECT_EQ(author.getBiography(), "Test Biography");
+}
+
+TEST(AuthorTest, HasName) {
+    Author author(1, "Иван Петров");
+    
+    EXPECT_TRUE(author.hasName("Иван"));
+    EXPECT_TRUE(author.hasName("Петров"));
+    EXPECT_TRUE(author.hasName("ван Пет"));
+    EXPECT_FALSE(author.hasName("Сидоров"));
+}
+
+// Тесты для класса AuthorBook
+TEST(AuthorBookTest, ConstructorAndGetters) {
+    auto author = std::make_shared<Author>(1, "Test Author");
+    AuthorBook book("Test Book", author, "Test Theme", "Test Publisher", "Test Location", 2023);
+    
+    EXPECT_EQ(book.getTitle(), "Test Book");
+    EXPECT_EQ(book.getAuthor()->getId(), 1);
+    EXPECT_EQ(book.getAuthors().size(), 1);
+    EXPECT_EQ(book.getAuthorNames()[0], "Test Author");
+    EXPECT_EQ(book.getTheme(), "Test Theme");
+    EXPECT_EQ(book.getPublisher(), "Test Publisher");
+    EXPECT_EQ(book.getLocation(), "Test Location");
     EXPECT_EQ(book.getYear(), 2023);
 }
 
-// === ТЕСТЫ ДЛЯ КЛАССА MultiAuthorBook ===
-
-// Тест конструктора и геттеров MultiAuthorBook
+// Тесты для класса MultiAuthorBook
 TEST(MultiAuthorBookTest, ConstructorAndGetters) {
-    // Создаем вектор авторов
-    std::vector<std::string> authors = {"Author1", "Author2", "Author3"};
+    auto author1 = std::make_shared<Author>(1, "Author 1");
+    auto author2 = std::make_shared<Author>(2, "Author 2");
+    std::vector<std::shared_ptr<Author>> authors = {author1, author2};
     
-    // Создаем тестовый объект
-    MultiAuthorBook book("Test", authors, "Theme", "Publisher", "Location", 2023);
+    MultiAuthorBook book("Test Book", authors, "Test Theme", "Test Publisher", "Test Location", 2023);
     
-    // Проверяем базовые поля
-    EXPECT_EQ(book.getTitle(), "Test");
-    
-    // Получаем и проверяем список авторов
-    auto bookAuthors = book.getAuthors();
-    EXPECT_EQ(bookAuthors.size(), 3);
-    EXPECT_EQ(bookAuthors[0], "Author1");
-    EXPECT_EQ(bookAuthors[1], "Author2");
-    EXPECT_EQ(bookAuthors[2], "Author3");
+    EXPECT_EQ(book.getTitle(), "Test Book");
+    EXPECT_EQ(book.getAuthors().size(), 2);
+    EXPECT_EQ(book.getAuthorNames().size(), 2);
+    EXPECT_EQ(book.getAuthorNames()[0], "Author 1");
+    EXPECT_EQ(book.getAuthorNames()[1], "Author 2");
 }
 
-// === ТЕСТЫ ДЛЯ КЛАССА Library ===
-
-// Тест добавления и поиска книг в библиотеке
-TEST(LibraryTest, AddAndFindBook) {
-    // Создаем библиотеку
+// Тесты для класса Library
+TEST(LibraryTest, AddAndFindAuthor) {
     Library library;
     
-    // Создаем тестовые книги
-    auto book1 = std::make_shared<AuthorBook>("Book1", "Author1", "Theme1", "Pub1", "Loc1", 2000);
-    auto book2 = std::make_shared<AuthorBook>("Book2", "Author2", "Theme2", "Pub2", "Loc2", 2001);
+    auto author1 = library.addAuthor("Author 1");
+    auto author2 = library.addAuthor("Author 2", "Biography 2");
     
-    // Добавляем книги в библиотеку
-    library.addBook(book1);
-    library.addBook(book2);
-    
-    // Тестируем поиск по названию
-    auto foundBooks = library.findBooksByTitle("Book1");
-    EXPECT_EQ(foundBooks.size(), 1);  // Должна найти одну книгу
-    EXPECT_EQ(foundBooks[0]->getTitle(), "Book1");  // Должна быть именно Book1
-    
-    // Тестируем поиск по автору
-    auto authorBooks = library.findBooksByAuthor("Author2");
-    EXPECT_EQ(authorBooks.size(), 1);  // Должна найти одну книгу
-    EXPECT_EQ(authorBooks[0]->getAuthors()[0], "Author2");  // Проверяем автора
+    EXPECT_EQ(author1->getId(), 1);
+    EXPECT_EQ(author2->getId(), 2);
+    EXPECT_EQ(author1->getName(), "Author 1");
+    EXPECT_EQ(author2->getName(), "Author 2");
+    EXPECT_EQ(author2->getBiography(), "Biography 2");
 }
 
-// === ТОЧКА ВХОДА ДЛЯ ЗАПУСКА ТЕСТОВ ===
-int main(int argc, char **argv) {
-    // Инициализация Google Test Framework
-    ::testing::InitGoogleTest(&argc, argv);
+TEST(LibraryTest, AddAndFindBooks) {
+    Library library;
     
-    // Запуск всех тестов
-    return RUN_ALL_TESTS();
-}
+    // Создаем авторов
+    auto author1 = library.addAuthor("Author 1");
+    auto author2 = library.addAuthor("Author 2");
+    
+    // Создаем книгу с одним автором
+    library.addAuthorBook("Book 1", author1->getId(),
+                         "Theme 1", "Publisher 1", "Location 1", 2000);
+    
+    // Создаем книгу с несколькими авторами
+    library.addMultiAuthorBook("Book 2", {author1->getId(), author2->getId()},
+                              "Theme 2", "Publisher 2", "Location 2", 2001);
+    
+    // Проверяем поиск по наз
