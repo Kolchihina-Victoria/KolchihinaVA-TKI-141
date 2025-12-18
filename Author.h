@@ -30,11 +30,11 @@ public:
     // Сеттер для биографии
     void setBiography(const std::string& biography);
 
-    // Методы для работы с книгами автора
-    void addBook(const std::shared_ptr<Book>& book);
-    std::vector<std::shared_ptr<Book>> getBooks() const;
-    bool hasBooks() const;
-    void printAllBooks() const;
+   // Методы для работы с книгами
+    void addBook(const std::shared_ptr<Book>& book);  // Добавить книгу автору
+    std::vector<std::shared_ptr<Book>> getBooks() const;  // Получить все книги автора
+    bool hasBooks() const;  // Проверить, есть ли у автора книги
+    void printAllBooks() const;  // Вывести все книги автора
 
     // Метод вывода информации
     void printInfo() const;
